@@ -4,16 +4,16 @@ package exercise1;
 
 public class SimulationController {
 
-//	private SimulationModel simModel;
-//	private int nWorkers;
-//	//private Master master;
+	private SimulationModel simModel;
+	private int nWorkers;
+	private MasterService masterService;
 //	//private StopFlag stopFlag;
 //
-//	public SimulationController(SimulationModel simModel, int nWorkers) {
-//		this.simModel = simModel;
-//		this.nWorkers = nWorkers;
+	public SimulationController(SimulationModel simModel, int nWorkers) {
+		this.simModel = simModel;
+		this.nWorkers = nWorkers;
 //		this.stopFlag = new StopFlag(false);
-//	}
+	}
 //
 //	public void stop(){
 //		if(master != null){
@@ -29,7 +29,10 @@ public class SimulationController {
 //		master.start();
 //	}
 //
-//	public void execute() {
+	public void execute() {
+        masterService = new MasterService(simModel, nWorkers);
+        masterService.start();
+    }
 //		master = new Master(simModel, nWorkers, stopFlag);
 //		master.start();
 //	}
