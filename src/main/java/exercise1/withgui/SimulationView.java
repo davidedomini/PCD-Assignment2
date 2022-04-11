@@ -99,11 +99,11 @@ public class SimulationView implements ModelObserver {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == this.stopButton){
-				//controller.stop();
+				controller.stop();
 				stopButton.setEnabled(false);
 				startButton.setEnabled(true);
 			}else if(e.getSource() == this.startButton){
-				//controller.restart();
+				controller.restart();
 				stopButton.setEnabled(true);
 				startButton.setEnabled(false);
 				startButton.transferFocus();

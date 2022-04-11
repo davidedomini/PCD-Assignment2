@@ -1,39 +1,36 @@
 package exercise1;
 
-//import ass01.concurrent.WithGui.StopFlag;
+import exercise1.lib.StopFlag;
 
 public class SimulationController {
 
 	private SimulationModel simModel;
 	private int nWorkers;
 	private MasterService masterService;
-//	//private StopFlag stopFlag;
-//
+	private StopFlag stopFlag;
+
 	public SimulationController(SimulationModel simModel, int nWorkers) {
 		this.simModel = simModel;
 		this.nWorkers = nWorkers;
-//		this.stopFlag = new StopFlag(false);
+		this.stopFlag = new StopFlag(false);
 	}
-//
-//	public void stop(){
-//		if(master != null){
-//			System.out.println("Stop invoked");
-//			stopFlag.setStopFlag(true);
-//		}
-//	}
-//
-//	public void restart(){
-//		simModel.reset();
-//		stopFlag.setStopFlag(false);
-//		master = new Master(simModel, nWorkers, stopFlag);
-//		master.start();
-//	}
-//
+
+	public void stop(){
+		if(masterService != null){
+			System.out.println("Stop invoked");
+			stopFlag.setStopFlag(true);
+		}
+	}
+
+	public void restart(){
+		simModel.reset();
+		stopFlag.setStopFlag(false);
+		masterService = new MasterService(simModel, nWorkers, stopFlag);
+		masterService.start();
+	}
+
 	public void execute() {
-        masterService = new MasterService(simModel, nWorkers);
+        masterService = new MasterService(simModel, nWorkers, stopFlag);
         masterService.start();
     }
-//		master = new Master(simModel, nWorkers, stopFlag);
-//		master.start();
-//	}
 }

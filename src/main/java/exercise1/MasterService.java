@@ -1,6 +1,7 @@
 package exercise1;
 
 import exercise1.lib.Body;
+import exercise1.lib.StopFlag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +14,18 @@ public class MasterService extends Thread{
 
     private SimulationModel simulationModel;
     private ExecutorService executor;
+    private StopFlag stopFlag;
 
-    public MasterService(SimulationModel simulationModel, int poolSize){
+    public MasterService(SimulationModel simulationModel, int poolSize, StopFlag stopFlag){
         this.simulationModel = simulationModel;
         this.executor = Executors.newFixedThreadPool(poolSize);
+        this.stopFlag = stopFlag;
     }
 
     public void run(){
         simulationModel.init();
         try{
-            while(!simulationModel.isCompleted()){
+            while(!simulationModel.isCompleted() && !stopFlag.getStopFlag()){
                 List<Body> velRes = computeVelocity();
                 List<Body> posRes = computePositions(velRes);
                 simulationModel.updateVirtualTime();
