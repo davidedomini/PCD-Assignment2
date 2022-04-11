@@ -11,7 +11,7 @@ package exercise1;
 //import java.util.List;
 //import java.util.Random;
 //
-//public class SimulationModel {
+public class SimulationModel {
 //
 //    private List<Body> bodies;
 //    private List<ModelObserver> observers;
@@ -97,4 +97,4 @@ package exercise1;
 //            obs.modelUpdated(this);
 //        }
 //    }
-//}
+}
