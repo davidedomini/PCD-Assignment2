@@ -1,4 +1,4 @@
-package exercise1;
+package exercise1.lib;
 
 public interface ModelObserver {
 

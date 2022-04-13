@@ -1,9 +1,6 @@
-package exercise1;
+package exercise1.lib;
 
-import exercise1.lib.Body;
-import exercise1.lib.Boundary;
-import exercise1.lib.P2d;
-import exercise1.lib.V2d;
+import exercise1.lib.*;
 
 import java.util.ArrayList;
 import java.util.List;

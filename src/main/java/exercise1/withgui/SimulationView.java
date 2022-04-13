@@ -1,8 +1,8 @@
 package exercise1.withgui;
 
-import exercise1.ModelObserver;
-import exercise1.SimulationController;
-import exercise1.SimulationModel;
+import exercise1.lib.ModelObserver;
+import exercise1.lib.SimulationController;
+import exercise1.lib.SimulationModel;
 import exercise1.lib.Body;
 import exercise1.lib.Boundary;
 import exercise1.lib.P2d;

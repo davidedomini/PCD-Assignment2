@@ -1,9 +1,7 @@
-package exercise1;
-
-import exercise1.lib.Body;
-import exercise1.lib.StopFlag;
+package exercise1.lib;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,14 +23,16 @@ public class MasterService extends Thread{
     public void run(){
         simulationModel.init();
         try{
+            long start = Calendar.getInstance().getTimeInMillis();
             while(!simulationModel.isCompleted() && !stopFlag.getStopFlag()){
                 List<Body> velRes = computeVelocity();
                 List<Body> posRes = computePositions(velRes);
                 simulationModel.updateVirtualTime();
                 simulationModel.update(posRes);
-                System.out.println("ITER: " + simulationModel.getIter());
+                //System.out.println("ITER: " + simulationModel.getIter());
             }
-
+            long finish = Calendar.getInstance().getTimeInMillis();
+            System.out.println("Time: " + (finish-start) + " ms");
             executor.shutdown();
             executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
         } catch(Exception exception){

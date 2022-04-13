@@ -1,6 +1,4 @@
-package exercise1;
-
-import exercise1.lib.StopFlag;
+package exercise1.lib;
 
 public class SimulationController {
 

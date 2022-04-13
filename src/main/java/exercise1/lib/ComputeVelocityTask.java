@@ -1,4 +1,4 @@
-package exercise1;
+package exercise1.lib;
 
 import exercise1.lib.Body;
 import exercise1.lib.V2d;

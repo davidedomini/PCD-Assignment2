@@ -1,7 +1,7 @@
 package exercise1.withgui;
 
-import exercise1.SimulationController;
-import exercise1.SimulationModel;
+import exercise1.lib.SimulationController;
+import exercise1.lib.SimulationModel;
 import exercise1.lib.Boundary;
 
 public class SimulationMainWithGui {
