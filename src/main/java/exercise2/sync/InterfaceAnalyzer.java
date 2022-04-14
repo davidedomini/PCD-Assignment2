@@ -8,15 +8,21 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 public class InterfaceAnalyzer extends VoidVisitorAdapter<Void> {
     private InterfaceReport ir;
-    public InterfaceAnalyzer(InterfaceReport ir){
+
+    public InterfaceAnalyzer(InterfaceReport ir) {
         this.ir = ir;
     }
 
-    public InterfaceReport getReport(){
+    public InterfaceReport getReport() {
         return this.ir;
     }
 
-    public void visit(ClassOrInterfaceDeclaration id, Void collector){
+    public void visit(PackageDeclaration fd, Void collector) {
+        super.visit(fd, collector);
+        this.ir.setInterfacePackage(fd.getNameAsString());
+    }
+
+    public void visit(ClassOrInterfaceDeclaration id, Void collector) {
         super.visit(id, collector);
         this.ir.setInterfaceName(id.getNameAsString());
     }
@@ -30,11 +36,11 @@ public class InterfaceAnalyzer extends VoidVisitorAdapter<Void> {
                 .stream()
                 .map(Modifier::toString)
                 .forEach(m::addModifier);
-        this.ir.addMethod(m);
-    }
+        md.getParameters()
+                .stream()
+                .map(e -> new Parameter(e.getNameAsString(), e.getTypeAsString()))
+                .forEach(m::addParameter);
 
-    public void visit(PackageDeclaration fd, Void collector) {
-        super.visit(fd, collector);
-        this.ir.setInterfacePackage(fd.getNameAsString());
+        this.ir.addMethod(m);
     }
 }
