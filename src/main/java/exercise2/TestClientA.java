@@ -2,7 +2,7 @@ package exercise2;
 
 import io.vertx.core.Vertx;
 
-public class Client {
+public class TestClientA {
     public static void main(String[] args){
         AsyncJavaParser lib = new AsyncJavaParser(Vertx.vertx());
         lib.getInterfaceReport("src/main/java/exercise2/examples/InterfacciaDiProva.java")

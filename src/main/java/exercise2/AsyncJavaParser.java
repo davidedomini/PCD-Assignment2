@@ -11,14 +11,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class AsyncJavaParser {
-    private Vertx vertx;
+    private final Vertx vertx;
 
     public AsyncJavaParser(Vertx vertx){
         this.vertx = vertx;
     }
 
     public Future<InterfaceReport> getInterfaceReport(String srcInterfacePath){
-        Future<InterfaceReport> res = vertx.executeBlocking(p ->{
+        return vertx.executeBlocking(p ->{
             InterfaceReport result = new InterfaceReport();
             InterfaceVisitor analyzer = new InterfaceVisitor(result);
             try {
@@ -29,6 +29,5 @@ public class AsyncJavaParser {
                 p.fail(e.getMessage());
             }
         });
-        return res;
     }
 }
