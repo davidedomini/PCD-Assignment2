@@ -1,4 +1,4 @@
-package exercise2.sync;
+package exercise2.lib;
 
 public class Parameter {
     private final String name;

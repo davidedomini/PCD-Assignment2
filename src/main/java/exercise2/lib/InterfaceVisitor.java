@@ -1,4 +1,4 @@
-package exercise2.sync;
+package exercise2.lib;
 
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.PackageDeclaration;
@@ -6,10 +6,10 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
-public class InterfaceAnalyzer extends VoidVisitorAdapter<Void> {
+public class InterfaceVisitor extends VoidVisitorAdapter<Void> {
     private InterfaceReport ir;
 
-    public InterfaceAnalyzer(InterfaceReport ir) {
+    public InterfaceVisitor(InterfaceReport ir) {
         this.ir = ir;
     }
 

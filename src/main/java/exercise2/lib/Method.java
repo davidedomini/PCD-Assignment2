@@ -1,4 +1,4 @@
-package exercise2.sync;
+package exercise2.lib;
 
 import java.util.ArrayList;
 import java.util.List;
