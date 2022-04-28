@@ -39,8 +39,13 @@ public class SimulationModel {
         }
     }
 
-    public void update(List<Body> b){
-        this.bodies = b;
+//    public void update(List<Body> b){
+//        this.bodies = b;
+//        //Notifica gli observer
+//        notifyObservers();
+//    }
+
+    public void update(){
         //Notifica gli observer
         notifyObservers();
     }

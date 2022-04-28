@@ -29,11 +29,10 @@ public class MasterService extends Thread{
         try{
             long start = Calendar.getInstance().getTimeInMillis();
             while(!simulationModel.isCompleted() && !stopFlag.getStopFlag()){
-                List<Body> velRes = computeVelocity();
-                List<Body> posRes = computePositions(velRes);
+                computeNVelocities();
+                computeNPositions();
                 simulationModel.updateVirtualTime();
-                simulationModel.update(posRes);
-                //System.out.println("ITER: " + simulationModel.getIter());
+                simulationModel.update();
             }
             long finish = Calendar.getInstance().getTimeInMillis();
             System.out.println("Time: " + (finish-start) + " ms");
@@ -48,6 +47,7 @@ public class MasterService extends Thread{
         List<Future<Void>> results = new ArrayList<>();
         for(int i = 0; i <= this.poolSize; i++){
             int start = i * this.bodiesPerTask;
+            System.out.println("Assegno il compito vel al task " + i);
             try{
                 Future<Void> res = executor
                         .submit(new ComputeNVelocityTask(simulationModel.getBodies(), simulationModel.getDt(), start, bodiesPerTask));
@@ -66,55 +66,27 @@ public class MasterService extends Thread{
         }
     }
 
+    private void computeNPositions(){
+        List<Future<Void>> results = new ArrayList<>();
 
-
-
-    private List<Body> computeVelocity(){
-        List<Future<Body>> results = new ArrayList<>();
-        List<Body> bodiesRes = new ArrayList<>();
-
-        for(Body b: simulationModel.getBodies()){
+        for(int i = 0; i <= this.poolSize; i++){
+            int start = i * this.bodiesPerTask;
             try{
-                Future<Body> res = executor
-                        .submit(new ComputeVelocityTask(new Body(b), simulationModel.getDt(), simulationModel.getBodies()));
+                Future<Void> res = executor
+                        .submit(new ComputeNPositionsTask(simulationModel.getBodies(), simulationModel.getDt(), simulationModel.getBounds(), start, bodiesPerTask));
                 results.add(res);
-            } catch(Exception exception){
-                exception.printStackTrace();
+            }catch(Exception ex){
+                ex.printStackTrace();
             }
         }
 
-        for(Future<Body> b : results){
+        for(Future<Void> r : results){
             try{
-                bodiesRes.add(b.get());
+                r.get();
             } catch(Exception exception){
                 exception.printStackTrace();
             }
         }
-        return bodiesRes;
-    }
-
-    private List<Body> computePositions(List<Body> bodies){
-        List<Future<Body>> results = new ArrayList<>();
-        List<Body> bodiesRes = new ArrayList<>();
-
-        for(Body b: bodies){
-            try{
-                Future<Body> res = executor
-                        .submit(new ComputePositionTask(new Body(b), simulationModel.getBounds(), simulationModel.getDt()));
-                results.add(res);
-            } catch(Exception exception){
-                exception.printStackTrace();
-            }
-        }
-
-        for(Future<Body> b : results){
-            try{
-                bodiesRes.add(b.get());
-            } catch(Exception exception){
-                exception.printStackTrace();
-            }
-        }
-        return bodiesRes;
     }
 
 }
