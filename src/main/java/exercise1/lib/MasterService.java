@@ -47,7 +47,6 @@ public class MasterService extends Thread{
         List<Future<Void>> results = new ArrayList<>();
         for(int i = 0; i <= this.poolSize; i++){
             int start = i * this.bodiesPerTask;
-            System.out.println("Assegno il compito vel al task " + i);
             try{
                 Future<Void> res = executor
                         .submit(new ComputeNVelocityTask(simulationModel.getBodies(), simulationModel.getDt(), start, bodiesPerTask));
