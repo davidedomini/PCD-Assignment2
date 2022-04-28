@@ -13,11 +13,15 @@ public class MasterService extends Thread{
     private SimulationModel simulationModel;
     private ExecutorService executor;
     private StopFlag stopFlag;
+    private int bodiesPerTask;
+    private int poolSize;
 
     public MasterService(SimulationModel simulationModel, int poolSize, StopFlag stopFlag){
         this.simulationModel = simulationModel;
         this.executor = Executors.newFixedThreadPool(poolSize);
         this.stopFlag = stopFlag;
+        this.bodiesPerTask = (int) Math.ceil( (double) simulationModel.getnBodies() / poolSize);
+        this.poolSize = poolSize;
     }
 
     public void run(){
@@ -39,6 +43,31 @@ public class MasterService extends Thread{
             exception.printStackTrace();
         }
     }
+
+    private void computeNVelocities(){
+        List<Future<Void>> results = new ArrayList<>();
+        for(int i = 0; i <= this.poolSize; i++){
+            int start = i * this.bodiesPerTask;
+            try{
+                Future<Void> res = executor
+                        .submit(new ComputeNVelocityTask(simulationModel.getBodies(), simulationModel.getDt(), start, bodiesPerTask));
+                results.add(res);
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+
+        for(Future<Void> r : results){
+            try{
+                r.get();
+            } catch(Exception exception){
+                exception.printStackTrace();
+            }
+        }
+    }
+
+
+
 
     private List<Body> computeVelocity(){
         List<Future<Body>> results = new ArrayList<>();
