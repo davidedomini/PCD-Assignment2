@@ -14,6 +14,18 @@ public class PackageReport {
         interfaceReports = new ArrayList<>();
     }
 
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public List<ClassReport> getClassReports() {
+        return classReports;
+    }
+
+    public List<InterfaceReport> getInterfaceReports() {
+        return interfaceReports;
+    }
+
     public void setPackageName(String packageName) {
         this.packageName = packageName;
     }

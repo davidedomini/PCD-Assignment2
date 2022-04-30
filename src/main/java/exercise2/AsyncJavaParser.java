@@ -11,7 +11,10 @@ import io.vertx.core.Vertx;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AsyncJavaParser {
     private final Vertx vertx;
@@ -44,6 +47,61 @@ public class AsyncJavaParser {
                 p.complete(analyzer.getReport());
             } catch (FileNotFoundException e) {
                 p.fail(e.getMessage());
+            }
+        });
+    }
+
+    public Future<PackageReport> getPackageReportNonRecursively(String srcPackagePath){
+        return vertx.executeBlocking(p ->{
+
+            PackageReport packageReport = new PackageReport();
+
+            List<String> filePaths = Stream.of(new File(srcPackagePath).listFiles())
+                    .filter(File::isFile)
+                    .map(File::toString)
+                    .collect(Collectors.toList());
+
+            //TODO: we must understand how to reuse pre-implemented methods to get class/interface reports
+            for (String file : filePaths){
+                try {
+                    CompilationUnit cu = StaticJavaParser.parse(new File(file));
+                    if(cu.getType(0).asClassOrInterfaceDeclaration().isInterface()){
+
+                        InterfaceReport result = new InterfaceReport();
+                        InterfaceVisitor analyzer = new InterfaceVisitor(result);
+                        try {
+                            CompilationUnit cu2 = StaticJavaParser.parse(new File(file));
+                            analyzer.visit(cu2, null);
+                            packageReport.addInterfaceReport(analyzer.getReport());
+                        } catch (FileNotFoundException e) {
+                           e.printStackTrace();
+                        }
+                    } else{
+                        ClassReport result = new ClassReport();
+                        ClassVisitor analyzer = new ClassVisitor(result);
+                        try {
+                            CompilationUnit cu2 = StaticJavaParser.parse(new File(file));
+                            analyzer.visit(cu2, null);
+                            packageReport.addClassReport(analyzer.getReport());
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } catch (Exception e) {
+                    p.fail(e.getMessage());
+                }
+
+                if(!packageReport.getClassReports().isEmpty()){
+                    String pkg = packageReport.getClassReports().get(0).getClassPackage();
+                    packageReport.setPackageName(pkg);
+                }else if(!packageReport.getInterfaceReports().isEmpty()){
+                    String pkg = packageReport.getInterfaceReports().get(0).getInterfacePackage();
+                    packageReport.setPackageName(pkg);
+                }else{
+                    packageReport.setPackageName("Not found");
+                }
+
+                p.complete(packageReport);
             }
         });
     }
