@@ -3,28 +3,30 @@ package exercise2.lib;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
-public class InterfaceVisitor extends VoidVisitorAdapter<Void> {
-    private InterfaceReport ir;
+public class ClassVisitor extends VoidVisitorAdapter<Void> {
 
-    public InterfaceVisitor(InterfaceReport ir) {
-        this.ir = ir;
+    private ClassReport cr;
+
+    public ClassVisitor(ClassReport cr) {
+        this.cr = cr;
     }
 
-    public InterfaceReport getReport() {
-        return this.ir;
+    public ClassReport getReport() {
+        return cr;
     }
 
     public void visit(PackageDeclaration pd, Void collector) {
         super.visit(pd, collector);
-        this.ir.setInterfacePackage(pd.getNameAsString());
+        this.cr.setClassPackage(pd.getNameAsString());
     }
 
     public void visit(ClassOrInterfaceDeclaration id, Void collector) {
         super.visit(id, collector);
-        this.ir.setInterfaceName(id.getNameAsString());
+        this.cr.setClassName(id.getNameAsString());
     }
 
     public void visit(MethodDeclaration md, Void collector) {
@@ -43,6 +45,15 @@ public class InterfaceVisitor extends VoidVisitorAdapter<Void> {
         m.setBeginLine(md.getBegin().get().line);
         m.setEndLine(md.getEnd().get().line);
 
-        this.ir.addMethod(m);
+        this.cr.addMethod(m);
     }
+
+    public void visit(FieldDeclaration fd, Void collector){
+        super.visit(fd, collector);
+        fd.getVariables()
+                .stream()
+                .map(f -> new Field(f.getNameAsString(), f.getTypeAsString()))
+                .forEach(cr::addField);
+    }
+
 }
