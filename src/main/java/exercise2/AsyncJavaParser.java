@@ -2,6 +2,8 @@ package exercise2;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import exercise2.lib.ClassReport;
+import exercise2.lib.ClassVisitor;
 import exercise2.lib.InterfaceReport;
 import exercise2.lib.InterfaceVisitor;
 import io.vertx.core.Future;
@@ -23,6 +25,20 @@ public class AsyncJavaParser {
             InterfaceVisitor analyzer = new InterfaceVisitor(result);
             try {
                 CompilationUnit cu = StaticJavaParser.parse(new File(srcInterfacePath));
+                analyzer.visit(cu, null);
+                p.complete(analyzer.getReport());
+            } catch (FileNotFoundException e) {
+                p.fail(e.getMessage());
+            }
+        });
+    }
+
+    public Future<ClassReport> getClassReport(String srcClassPath){
+        return vertx.executeBlocking(p ->{
+            ClassReport result = new ClassReport();
+            ClassVisitor analyzer = new ClassVisitor(result);
+            try {
+                CompilationUnit cu = StaticJavaParser.parse(new File(srcClassPath));
                 analyzer.visit(cu, null);
                 p.complete(analyzer.getReport());
             } catch (FileNotFoundException e) {

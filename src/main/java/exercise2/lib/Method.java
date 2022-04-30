@@ -5,7 +5,9 @@ import java.util.List;
 
 public class Method {
     private String name;
-    private String Type;
+    private String type;
+    private int beginLine;
+    private int endLine;
     private final List<String> modifiers;
     private final List<Parameter> parameters;
 
@@ -19,7 +21,15 @@ public class Method {
     }
 
     public void setType(String type) {
-        Type = type;
+        this.type = type;
+    }
+
+    public void setBeginLine(int beginLine) {
+        this.beginLine = beginLine;
+    }
+
+    public void setEndLine(int endLine) {
+        this.endLine = endLine;
     }
 
     public void addModifier(String modifier) {
@@ -35,7 +45,15 @@ public class Method {
     }
 
     public String getType() {
-        return Type;
+        return type;
+    }
+
+    public int getBeginLine() {
+        return beginLine;
+    }
+
+    public int getEndLine() {
+        return endLine;
     }
 
     public List<String> getModifiers() {
@@ -46,7 +64,9 @@ public class Method {
     public String toString() {
         return "Method{" +
                 "name='" + name + '\'' +
-                ", Type='" + Type + '\'' +
+                ", type='" + type + '\'' +
+                ", beginLine:" + beginLine +
+                ", endLine:" + endLine +
                 ", modifiers=" + modifiers +
                 ", parameters=" + parameters +
                 '}';
