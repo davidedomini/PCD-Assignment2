@@ -29,8 +29,8 @@ public class MasterService extends Thread{
         try{
             long start = Calendar.getInstance().getTimeInMillis();
             while(!simulationModel.isCompleted() && !stopFlag.getStopFlag()){
-                computeNVelocities();
-                computeNPositions();
+                computeVelocities();
+                computePositions();
                 simulationModel.updateVirtualTime();
                 simulationModel.update();
             }
@@ -43,7 +43,7 @@ public class MasterService extends Thread{
         }
     }
 
-    private void computeNVelocities(){
+    private void computeVelocities(){
         List<Future<Void>> results = new ArrayList<>();
         for(int i = 0; i <= this.poolSize; i++){
             int start = i * this.bodiesPerTask;
@@ -65,7 +65,7 @@ public class MasterService extends Thread{
         }
     }
 
-    private void computeNPositions(){
+    private void computePositions(){
         List<Future<Void>> results = new ArrayList<>();
 
         for(int i = 0; i <= this.poolSize; i++){
