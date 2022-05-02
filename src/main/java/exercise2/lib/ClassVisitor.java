@@ -11,8 +11,8 @@ public class ClassVisitor extends VoidVisitorAdapter<Void> {
 
     private ClassReport cr;
 
-    public ClassVisitor(ClassReport cr) {
-        this.cr = cr;
+    public ClassVisitor() {
+        this.cr = new ClassReport();
     }
 
     public ClassReport getReport() {

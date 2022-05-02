@@ -5,7 +5,7 @@ import exercise2.lib.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InterfaceReport{
+public class InterfaceReport {
 
     private String interfaceName;
     private String interfacePackage;

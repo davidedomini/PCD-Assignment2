@@ -9,8 +9,8 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 public class InterfaceVisitor extends VoidVisitorAdapter<Void> {
     private InterfaceReport ir;
 
-    public InterfaceVisitor(InterfaceReport ir) {
-        this.ir = ir;
+    public InterfaceVisitor() {
+        this.ir = new InterfaceReport();
     }
 
     public InterfaceReport getReport() {

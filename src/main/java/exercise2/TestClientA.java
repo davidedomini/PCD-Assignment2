@@ -24,10 +24,5 @@ public class TestClientA {
                     System.out.println("Returned error: " + th.getMessage());
                 });
 
-        lib.getPackageReport("src/main/java/exercise2/examples")
-                .onSuccess(System.out::println)
-                .onFailure((Throwable th)-> {
-                    System.out.println("Returned error: " + th.getMessage());
-                });
     }
 }
