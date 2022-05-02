@@ -49,7 +49,7 @@ public class AsyncJavaParser {
         });
     }
 
-    public Future<PackageReport> getPackageReportNonRecursively(String srcPackagePath){
+    public Future<PackageReport> getPackageReport(String srcPackagePath){
         return vertx.executeBlocking(p ->{
 
             PackageReport packageReport = new PackageReport();
