@@ -10,7 +10,9 @@ import io.vertx.core.Vertx;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -83,6 +85,10 @@ public class AsyncJavaParser {
         });
     }
 
+    public void aa(){
+        System.out.println(getAllDirectories("src/main/java/exercise2/"));
+    }
+
     private String getPackageNameFromPackageReport(PackageReport packageReport){
         String pkg = "Not Found";
         if(!packageReport.getClassReports().isEmpty()){
@@ -98,6 +104,26 @@ public class AsyncJavaParser {
                 .filter(File::isFile)
                 .map(File::toString)
                 .collect(Collectors.toList());
+    }
+
+    private Set<String> getAllDirectories(String srcPath){
+        Set<String> s = new HashSet<>();
+        Set<String> subDir = Stream.of(new File(srcPath).listFiles())
+                .filter(File::isDirectory)
+                .map(File::toString)
+                .collect(Collectors.toSet());
+
+        //Set<String> t = new HashSet<>();
+//        subDir.stream()
+//            .map(this::getAllDirectories)
+//            .forEach(t::addAll);
+
+        for(String d : subDir){
+            s.addAll(getAllDirectories(d));
+        }
+        subDir.addAll(s);
+        subDir.add(srcPath);
+        return subDir;
     }
 
 }

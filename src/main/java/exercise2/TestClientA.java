@@ -2,6 +2,7 @@ package exercise2;
 
 import io.vertx.core.Vertx;
 
+
 public class TestClientA {
     public static void main(String[] args){
         AsyncJavaParser lib = new AsyncJavaParser(Vertx.vertx());
@@ -24,5 +25,12 @@ public class TestClientA {
                     System.out.println("Returned error: " + th.getMessage());
                 });
 
+
+        lib.aa();
+
+
     }
+
+
+
 }
