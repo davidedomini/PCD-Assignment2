@@ -107,21 +107,17 @@ public class AsyncJavaParser {
     }
 
     private Set<String> getAllDirectories(String srcPath){
-        Set<String> s = new HashSet<>();
+        Set<String> t = new HashSet<>();
         Set<String> subDir = Stream.of(new File(srcPath).listFiles())
                 .filter(File::isDirectory)
                 .map(File::toString)
                 .collect(Collectors.toSet());
 
-        //Set<String> t = new HashSet<>();
-//        subDir.stream()
-//            .map(this::getAllDirectories)
-//            .forEach(t::addAll);
+        subDir.stream()
+            .map(this::getAllDirectories)
+            .forEach(t::addAll);
 
-        for(String d : subDir){
-            s.addAll(getAllDirectories(d));
-        }
-        subDir.addAll(s);
+        subDir.addAll(t);
         subDir.add(srcPath);
         return subDir;
     }
