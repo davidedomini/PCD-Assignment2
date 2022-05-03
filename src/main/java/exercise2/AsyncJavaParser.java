@@ -111,7 +111,7 @@ public class AsyncJavaParser {
                 .filter(this::hasMainMethod)
                 .map(ClassReport::getClassName)
                 .collect(Collectors.toList()) ;
-         return mainClass.size() > 1 ? mainClass.get(0) : "No main class founded";
+         return mainClass.size() > 0 ? mainClass.get(0) : "No main class founded";
     }
 
     private boolean hasMainMethod(ClassReport cr){
