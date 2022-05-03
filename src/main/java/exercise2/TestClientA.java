@@ -26,7 +26,11 @@ public class TestClientA {
                 });
 
 
-        lib.aa();
+        lib.getProjectReport("src/main/java/exercise2/examples")
+                .onSuccess(System.out::println)
+                .onFailure((Throwable th)-> {
+                    System.out.println("Returned error: " + th.getMessage());
+                });
 
 
     }

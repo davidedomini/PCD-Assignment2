@@ -9,10 +9,7 @@ import io.vertx.core.Vertx;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -85,8 +82,42 @@ public class AsyncJavaParser {
         });
     }
 
-    public void aa(){
-        System.out.println(getAllDirectories("src/main/java/exercise2/"));
+    public Future<ProjectReport> getProjectReport(String scrProjectPath){
+        return vertx.executeBlocking(p ->{
+            ProjectReport pr = new ProjectReport();
+            Set<String> packages = getAllDirectories(scrProjectPath);
+            List<Future> results = packages.stream()
+                    .map(this::getPackageReport)
+                    .collect(Collectors.toList());
+            CompositeFuture
+                    .all(results)
+                    .onSuccess((CompositeFuture res) ->{
+                        res.result().list()
+                                .forEach(e -> pr.addReport((PackageReport) e));
+                        pr.setMainClass(findMainClass(pr));
+                        p.complete(pr);
+                    })
+                    .onFailure((Throwable th)-> {
+                        System.out.println("Returned error: " + th.getMessage());
+                    });
+        });
+    }
+
+    private String findMainClass(ProjectReport pr){
+         List<String> mainClass = pr.getReports()
+                .stream()
+                .map(PackageReport::getClassReports)
+                .flatMap(Collection::stream)
+                .filter(this::hasMainMethod)
+                .map(ClassReport::getClassName)
+                .collect(Collectors.toList()) ;
+         return mainClass.size() > 1 ? mainClass.get(0) : "No main class founded";
+    }
+
+    private boolean hasMainMethod(ClassReport cr){
+        return cr.getMethods()
+                .stream()
+                .anyMatch(m -> m.getName().equals("main"));
     }
 
     private String getPackageNameFromPackageReport(PackageReport packageReport){
