@@ -101,6 +101,10 @@ public class AsyncJavaParser {
         });
     }
 
+    public void analyzeProject(String srcProject, String topic){
+        vertx.deployVerticle(new AnalyzerProject(srcProject, topic));
+    }
+
     private String findMainClass(ProjectReport pr){
          List<String> mainClass = pr.getReports()
                 .stream()
