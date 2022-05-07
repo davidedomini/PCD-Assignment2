@@ -6,24 +6,25 @@ import io.vertx.core.eventbus.EventBus;
 public class Controller extends AbstractVerticle {
 
     AsyncJavaParser lib;
+    EventBus bus;
 
     public Controller(AsyncJavaParser lib) {
         this.lib = lib;
     }
 
     public void start(){
-        EventBus bus = this.getVertx().eventBus();
-        bus.consumer("my-topic", message -> {
+        bus = this.getVertx().eventBus();
+        bus.consumer("updatesAnalysis", message -> {
             System.out.println(message.body());
         });
     }
 
     public void startAnalysis(String srcDirectory){
-        lib.analyzeProject(srcDirectory, "my-topic");
+        lib.analyzeProject(srcDirectory, "updatesAnalysis");
     }
 
     public void stopAnalysis(){
-
+        bus.publish("stopMessage", "Stop analysis");
     }
 
 }

@@ -13,7 +13,7 @@ public class View extends JFrame {
     public View(Controller controller){
         this.controller = controller;
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(300,300);
+        this.setSize(800,800);
         this.setLayout(new BorderLayout());
 
         // SELECTION OF THE DIRECTORY
@@ -46,12 +46,24 @@ public class View extends JFrame {
         this.getContentPane().add(BorderLayout.SOUTH, controlPanel);
         JButton startButton = new JButton("Start");
         JButton stopButton = new JButton("Stop");
+        stopButton.setEnabled(false);
         controlPanel.add(startButton);
         controlPanel.add(stopButton);
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                startButton.setEnabled(false);
+                stopButton.setEnabled(true);
                 controller.startAnalysis(labelDirectoryChoosed.getText());
+            }
+        });
+        stopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                stopButton.setEnabled(false);
+                startButton.setEnabled(true);
+                labelDirectoryChoosed.setText("No selected directory");
+                controller.stopAnalysis();
             }
         });
 

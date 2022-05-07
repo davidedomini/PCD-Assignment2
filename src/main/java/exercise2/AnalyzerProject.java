@@ -16,6 +16,9 @@ public class AnalyzerProject extends AbstractVerticle {
     public void start(){
         EventBus bus = this.getVertx().eventBus();
         bus.publish(topic, srcDirectory);
+        bus.consumer("stopMessage", message -> {
+            System.out.println("AnalyzerProject: received stop");
+        });
     }
 
 }
