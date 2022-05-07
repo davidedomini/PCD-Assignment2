@@ -2,6 +2,7 @@ package exercise2;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import exercise2.lib.*;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
@@ -100,4 +101,40 @@ public class AsyncJavaParser {
                 .collect(Collectors.toList());
     }
 
+    private List<String> listOfAllDirectories(String parentPath){
+        File parentFile = new File(parentPath);
+        Stream<String> directories = Stream.of(new File(parentPath).listFiles())
+                .filter(File::isDirectory)
+                .map(File::getPath)
+                .map(String::listOfAllDirectories());
+
+    }
+
+    public Future<ProjectReport> getProjectReportNonRecursively(String srcProjectPath) {
+        return vertx.executeBlocking(p ->{
+            ProjectReport projectReport = new ProjectReport();
+            List<String> filePaths = listOfAllFiles(srcProjectPath);
+            List<Future> results = new ArrayList<>();
+
+            for (String filePath : filePaths){
+                try {
+                    File file = new File(filePath);
+                    if (file.isDirectory()){
+                        results.add(this.getPackageReportNonRecursively(filePath));
+                    } else {
+                        CompilationUnit cu = StaticJavaParser.parse(file);
+                        TypeDeclaration<?> type = cu.getType(0);
+                        if (type.asClassOrInterfaceDeclaration().isInterface()){
+                            results.add(this.getInterfaceReport(filePath));
+                        } else {
+                            results.add(this.getClassReport(filePath));
+                        }
+                    }
+                } catch (Exception e) {
+                    p.fail(e.getMessage());
+                }
+            }
+
+        });
+    }
 }
