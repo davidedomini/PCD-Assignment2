@@ -2,6 +2,7 @@ package exercise2;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import exercise2.lib.*;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
@@ -98,6 +99,10 @@ public class AsyncJavaParser {
                         p.complete(pr);
                     });
         });
+    }
+
+    public void analyzeProject(String srcProject, String topic){
+        vertx.deployVerticle(new AnalyzerProject(srcProject, topic));
     }
 
     private String findMainClass(ProjectReport pr){
