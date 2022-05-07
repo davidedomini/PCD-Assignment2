@@ -96,9 +96,6 @@ public class AsyncJavaParser {
                                 .forEach(e -> pr.addReport((PackageReport) e));
                         pr.setMainClass(findMainClass(pr));
                         p.complete(pr);
-                    })
-                    .onFailure((Throwable th)-> {
-                        System.out.println("Returned error: " + th.getMessage());
                     });
         });
     }
