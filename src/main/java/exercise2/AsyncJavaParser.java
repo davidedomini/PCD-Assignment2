@@ -10,8 +10,7 @@ import io.vertx.core.Vertx;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -48,7 +47,7 @@ public class AsyncJavaParser {
         });
     }
 
-    public Future<PackageReport> getPackageReportNonRecursively(String srcPackagePath){
+    public Future<PackageReport> getPackageReport(String srcPackagePath){
         return vertx.executeBlocking(p ->{
 
             PackageReport packageReport = new PackageReport();
@@ -84,6 +83,41 @@ public class AsyncJavaParser {
         });
     }
 
+    public Future<ProjectReport> getProjectReport(String scrProjectPath){
+        return vertx.executeBlocking(p ->{
+            ProjectReport pr = new ProjectReport();
+            Set<String> packages = getAllDirectories(scrProjectPath);
+            List<Future> results = packages.stream()
+                    .map(this::getPackageReport)
+                    .collect(Collectors.toList());
+            CompositeFuture
+                    .all(results)
+                    .onSuccess((CompositeFuture res) ->{
+                        res.result().list()
+                                .forEach(e -> pr.addReport((PackageReport) e));
+                        pr.setMainClass(findMainClass(pr));
+                        p.complete(pr);
+                    });
+        });
+    }
+
+    private String findMainClass(ProjectReport pr){
+         List<String> mainClass = pr.getReports()
+                .stream()
+                .map(PackageReport::getClassReports)
+                .flatMap(Collection::stream)
+                .filter(this::hasMainMethod)
+                .map(ClassReport::getClassName)
+                .collect(Collectors.toList()) ;
+         return mainClass.size() > 0 ? mainClass.get(0) : "No main class founded";
+    }
+
+    private boolean hasMainMethod(ClassReport cr){
+        return cr.getMethods()
+                .stream()
+                .anyMatch(m -> m.getName().equals("main"));
+    }
+
     private String getPackageNameFromPackageReport(PackageReport packageReport){
         String pkg = "Not Found";
         if(!packageReport.getClassReports().isEmpty()){
@@ -101,40 +135,20 @@ public class AsyncJavaParser {
                 .collect(Collectors.toList());
     }
 
-    private List<String> listOfAllDirectories(String parentPath){
-        File parentFile = new File(parentPath);
-        Stream<String> directories = Stream.of(new File(parentPath).listFiles())
+    private Set<String> getAllDirectories(String srcPath){
+        Set<String> t = new HashSet<>();
+        Set<String> subDir = Stream.of(new File(srcPath).listFiles())
                 .filter(File::isDirectory)
-                .map(File::getPath)
-                .map(String::listOfAllDirectories());
+                .map(File::toString)
+                .collect(Collectors.toSet());
 
+        subDir.stream()
+            .map(this::getAllDirectories)
+            .forEach(t::addAll);
+
+        subDir.addAll(t);
+        subDir.add(srcPath);
+        return subDir;
     }
 
-    public Future<ProjectReport> getProjectReportNonRecursively(String srcProjectPath) {
-        return vertx.executeBlocking(p ->{
-            ProjectReport projectReport = new ProjectReport();
-            List<String> filePaths = listOfAllFiles(srcProjectPath);
-            List<Future> results = new ArrayList<>();
-
-            for (String filePath : filePaths){
-                try {
-                    File file = new File(filePath);
-                    if (file.isDirectory()){
-                        results.add(this.getPackageReportNonRecursively(filePath));
-                    } else {
-                        CompilationUnit cu = StaticJavaParser.parse(file);
-                        TypeDeclaration<?> type = cu.getType(0);
-                        if (type.asClassOrInterfaceDeclaration().isInterface()){
-                            results.add(this.getInterfaceReport(filePath));
-                        } else {
-                            results.add(this.getClassReport(filePath));
-                        }
-                    }
-                } catch (Exception e) {
-                    p.fail(e.getMessage());
-                }
-            }
-
-        });
-    }
 }

@@ -14,4 +14,6 @@ public class ClasseDiProva {
         b = par1;
         return b;
     }
+
+    public static void main(String[] args){}
 }
