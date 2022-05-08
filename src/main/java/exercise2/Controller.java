@@ -19,8 +19,8 @@ public class Controller extends AbstractVerticle {
         });
     }
 
-    public void startAnalysis(String srcDirectory){
-        lib.analyzeProject(srcDirectory, "updatesAnalysis");
+    public void startAnalysis(String srcDirectory, Model model){
+        lib.analyzeProject(srcDirectory, "updatesAnalysis", model);
     }
 
     public void stopAnalysis(){

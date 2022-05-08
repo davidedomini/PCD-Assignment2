@@ -9,9 +9,11 @@ public class View extends JFrame {
 
     JLabel labelDirectoryChoosed = new JLabel("No selected directory");
     Controller controller;
+    Model model;
 
-    public View(Controller controller){
+    public View(Controller controller, Model model){
         this.controller = controller;
+        this.model = model;
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800,800);
         this.setLayout(new BorderLayout());
@@ -54,7 +56,7 @@ public class View extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 startButton.setEnabled(false);
                 stopButton.setEnabled(true);
-                controller.startAnalysis(labelDirectoryChoosed.getText());
+                controller.startAnalysis(labelDirectoryChoosed.getText(), model);
             }
         });
         stopButton.addActionListener(new ActionListener() {
