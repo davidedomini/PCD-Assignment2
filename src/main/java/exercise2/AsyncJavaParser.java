@@ -100,8 +100,8 @@ public class AsyncJavaParser {
         });
     }
 
-    public void analyzeProject(String srcProject, String topic){
-        vertx.deployVerticle(new AnalyzerProject(srcProject, topic));
+    public void analyzeProject(String srcProject, String topic, Model model){
+        vertx.deployVerticle(new AnalyzerProject(srcProject, topic, this, model));
     }
 
     private String findMainClass(ProjectReport pr){
@@ -131,14 +131,14 @@ public class AsyncJavaParser {
         return pkg;
     }
 
-    private List<String> listOfAllFiles(String srcPackagePath){
+    public List<String> listOfAllFiles(String srcPackagePath){
         return Stream.of(new File(srcPackagePath).listFiles())
                 .filter(File::isFile)
                 .map(File::toString)
                 .collect(Collectors.toList());
     }
 
-    private Set<String> getAllDirectories(String srcPath){
+    public Set<String> getAllDirectories(String srcPath){
         Set<String> t = new HashSet<>();
         Set<String> subDir = Stream.of(new File(srcPath).listFiles())
                 .filter(File::isDirectory)
