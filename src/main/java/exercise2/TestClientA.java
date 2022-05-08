@@ -31,5 +31,4 @@ public class TestClientA {
                     System.out.println("Returned error: " + th.getMessage());
                 });
     }
-
 }

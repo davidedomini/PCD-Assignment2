@@ -2,7 +2,6 @@ package exercise2;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.TypeDeclaration;
 import exercise2.lib.*;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
