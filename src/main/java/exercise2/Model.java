@@ -1,5 +1,6 @@
 package exercise2;
 
+import exercise2.lib.PackageReport;
 import exercise2.lib.ProjectReport;
 
 public class Model {
@@ -16,5 +17,16 @@ public class Model {
 
     public ProjectReport getReport(){
         return this.report;
+    }
+
+    public void addPackageReport(PackageReport report){
+        this.report.addReport(report);
+    }
+
+    @Override
+    public String toString() {
+        return "Model{" +
+                "report=" + report +
+                '}';
     }
 }

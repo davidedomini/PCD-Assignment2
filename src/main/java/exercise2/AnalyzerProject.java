@@ -1,8 +1,14 @@
 package exercise2;
 
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
+import exercise2.lib.PackageReport;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.EventBus;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AnalyzerProject extends AbstractVerticle {
@@ -20,19 +26,17 @@ public class AnalyzerProject extends AbstractVerticle {
         this.topic = topic;
         this.lib = lib;
         this.stopFlag = false;
-        this.bus = this.getVertx().eventBus();
         this.model = model;
     }
 
     public void start(){
+        this.bus = this.getVertx().eventBus();
         bus.publish(topic, srcDirectory);
         bus.consumer("stopMessage", message -> {
             stopFlag = true;
             System.out.println("AnalyzerProject: received stop");
         });
-
-        allDirectories = List.copyOf(lib.getAllDirectories(srcDirectory));
-
+        allDirectories = new ArrayList<>(lib.getAllDirectories(srcDirectory));
         analyzeDirectories(allDirectories);
 
     }
@@ -41,24 +45,42 @@ public class AnalyzerProject extends AbstractVerticle {
         if(!stopFlag && !srcDirectories.isEmpty()){
             String pkg = srcDirectories.get(0);
             srcDirectories.remove(0);
+            PackageReport pkgReport = new PackageReport();
+            model.addPackageReport(pkgReport);
 
             List<String> files = lib.listOfAllFiles(pkg);
-            analyzeFiles(files);
+            analyzeFiles(files, pkgReport);
             //analyze
-
             bus.publish(topic, "New package analyzed");
             analyzeDirectories(srcDirectories);
         }
     }
 
-    private void analyzeFiles(List<String> srcFiles){
+    private void analyzeFiles(List<String> srcFiles, PackageReport myPackage){
         if(!stopFlag && !srcFiles.isEmpty()){
             String file = srcFiles.get(0);
             srcFiles.remove(0);
             //analyze
-
-            bus.publish(topic, "New class or interface analyzed");
-            analyzeFiles(srcFiles);
+            try {
+                if(lib.isInterface(file)){
+                    lib.getInterfaceReport(file)
+                            .onSuccess(r -> {
+                                myPackage.addInterfaceReport(r);
+                                if(myPackage.getPackageName() == null) myPackage.setPackageName(r.getInterfacePackage());
+                                bus.publish(topic, "New interface analyzed");
+                            });
+                }else{
+                    lib.getClassReport(file)
+                            .onSuccess(r ->{
+                                myPackage.addClassReport(r);
+                                if(myPackage.getPackageName() == null) myPackage.setPackageName(r.getClassPackage());
+                                bus.publish(topic, "New class analyzed");
+                            });
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            analyzeFiles(srcFiles, myPackage);
         }
     }
 

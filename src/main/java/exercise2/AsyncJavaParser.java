@@ -55,8 +55,7 @@ public class AsyncJavaParser {
 
             for (String file : filePaths){
                 try {
-                    CompilationUnit cu = StaticJavaParser.parse(new File(file));
-                    if(cu.getType(0).asClassOrInterfaceDeclaration().isInterface()){
+                    if(isInterface(file)){
                         results.add(this.getInterfaceReport(file));
                     } else{
                         results.add(this.getClassReport(file));
@@ -121,7 +120,7 @@ public class AsyncJavaParser {
                 .anyMatch(m -> m.getName().equals("main"));
     }
 
-    private String getPackageNameFromPackageReport(PackageReport packageReport){
+    public String getPackageNameFromPackageReport(PackageReport packageReport){
         String pkg = "Not Found";
         if(!packageReport.getClassReports().isEmpty()){
             pkg = packageReport.getClassReports().get(0).getClassPackage();
@@ -152,6 +151,11 @@ public class AsyncJavaParser {
         subDir.addAll(t);
         subDir.add(srcPath);
         return subDir;
+    }
+
+    public boolean isInterface(String srcFile) throws FileNotFoundException {
+        CompilationUnit cu = StaticJavaParser.parse(new File(srcFile));
+        return cu.getType(0).asClassOrInterfaceDeclaration().isInterface();
     }
 
 }

@@ -28,6 +28,7 @@ public class PackageReport {
 
     public void setPackageName(String packageName) {
         this.packageName = packageName;
+
     }
 
     public void addClassReport(ClassReport cr){
