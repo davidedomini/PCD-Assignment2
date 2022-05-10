@@ -42,10 +42,10 @@ public class InterfaceReport {
     @Override
     public String toString() {
         return "InterfaceReport{" +
-                "interfaceName='" + interfaceName + '\'' +
-                ", interfacePackage='" + interfacePackage + '\'' +
-                ", methods=" + methods +
-                '}';
+                "interfaceName='" + interfaceName + '\'' + "\n" +
+                ", interfacePackage='" + interfacePackage + '\'' + "\n" +
+                ", methods=" + methods + "\n" +
+                '}' + "\n";
     }
 }
 

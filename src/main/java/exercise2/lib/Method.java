@@ -69,6 +69,6 @@ public class Method {
                 ", endLine:" + endLine +
                 ", modifiers=" + modifiers +
                 ", parameters=" + parameters +
-                '}';
+                '}' + "\n";
     }
 }

@@ -21,7 +21,7 @@ public class Controller extends AbstractVerticle {
         bus = this.getVertx().eventBus();
         bus.consumer("updatesAnalysis", message -> {
             System.out.println(message.body());
-            view.notifyUpdates();
+            view.notifyUpdates(message.body().toString());
         });
     }
 

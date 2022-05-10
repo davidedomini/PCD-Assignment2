@@ -67,14 +67,16 @@ public class AnalyzerProject extends AbstractVerticle {
                             .onSuccess(r -> {
                                 myPackage.addInterfaceReport(r);
                                 if(myPackage.getPackageName() == null) myPackage.setPackageName(r.getInterfacePackage());
-                                bus.publish(topic, "New interface analyzed");
+                                //bus.publish(topic, "New interface analyzed");
+                                bus.publish(topic, r.toString());
                             });
                 }else{
                     lib.getClassReport(file)
                             .onSuccess(r ->{
                                 myPackage.addClassReport(r);
                                 if(myPackage.getPackageName() == null) myPackage.setPackageName(r.getClassPackage());
-                                bus.publish(topic, "New class analyzed");
+                                //bus.publish(topic, "New class analyzed");
+                                bus.publish(topic, r.toString());
                             });
                 }
             } catch (FileNotFoundException e) {

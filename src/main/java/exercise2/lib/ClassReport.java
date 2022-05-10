@@ -50,10 +50,10 @@ public class ClassReport {
     @Override
     public String toString() {
         return "ClassReport{" +
-                "className='" + className + '\'' +
-                ", classPackage='" + classPackage + '\'' +
-                ", methods=" + methods +
-                ", fields=" + fields +
-                '}';
+                "className='" + className + '\'' + "\n" +
+                ", classPackage='" + classPackage + '\'' + "\n" +
+                ", methods=" + methods + "\n" +
+                ", fields=" + fields + "\n" +
+                '}' + "\n";
     }
 }
