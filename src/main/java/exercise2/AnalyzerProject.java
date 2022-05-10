@@ -44,9 +44,9 @@ public class AnalyzerProject extends AbstractVerticle {
 
             List<String> files = lib.listOfAllFiles(pkg);
             analyzeFiles(files);
+            //analyze
 
             bus.publish(topic, "New package analyzed");
-
             analyzeDirectories(srcDirectories);
         }
     }
@@ -55,9 +55,9 @@ public class AnalyzerProject extends AbstractVerticle {
         if(!stopFlag && !srcFiles.isEmpty()){
             String file = srcFiles.get(0);
             srcFiles.remove(0);
+            //analyze
 
             bus.publish(topic, "New class or interface analyzed");
-
             analyzeFiles(srcFiles);
         }
     }
