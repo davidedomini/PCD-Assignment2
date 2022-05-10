@@ -19,14 +19,11 @@ public class Controller extends AbstractVerticle {
 
     public void start(){
         bus = this.getVertx().eventBus();
-        bus.consumer("updatesAnalysis", message -> {
-            System.out.println(message.body());
-            view.notifyUpdates(message.body().toString());
-        });
+        bus.consumer("updatesAnalysis", message -> view.notifyUpdates(message.body().toString()));
     }
 
-    public void startAnalysis(String srcDirectory, Model model){
-        lib.analyzeProject(srcDirectory, "updatesAnalysis", model);
+    public void startAnalysis(String srcDirectory){
+        lib.analyzeProject(srcDirectory, "updatesAnalysis");
     }
 
     public void stopAnalysis(){

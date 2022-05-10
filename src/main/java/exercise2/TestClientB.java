@@ -6,10 +6,9 @@ public class TestClientB {
     public static void main(String[] args){
         Vertx v = Vertx.vertx();
         AsyncJavaParser lib = new AsyncJavaParser(v);
-        Model model = new Model();
         Controller controller = new Controller(lib);
         v.deployVerticle(controller);
-        View view = new View(controller, model);
+        View view = new View(controller);
         controller.setView(view);
     }
 }

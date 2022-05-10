@@ -9,12 +9,10 @@ public class View extends JFrame {
 
     JLabel labelDirectoryChoosed = new JLabel("No selected directory");
     Controller controller;
-    Model model;
     JTextArea textAreaReport = new JTextArea();;
 
-    public View(Controller controller, Model model){
+    public View(Controller controller){
         this.controller = controller;
-        this.model = model;
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800,800);
         this.setLayout(new BorderLayout());
@@ -64,7 +62,8 @@ public class View extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 startButton.setEnabled(false);
                 stopButton.setEnabled(true);
-                controller.startAnalysis(labelDirectoryChoosed.getText(), model);
+                textAreaReport.setText("");
+                controller.startAnalysis(labelDirectoryChoosed.getText());
             }
         });
         stopButton.addActionListener(new ActionListener() {
@@ -81,12 +80,10 @@ public class View extends JFrame {
     }
 
     public void notifyUpdates(String updates){
-        //String upd = model.toString();
         display(updates);
     }
 
     private void display(String updates){
-        //update
         try {
             SwingUtilities.invokeAndWait(() -> {
                 textAreaReport.append(updates);
