@@ -7,15 +7,21 @@ public class Controller extends AbstractVerticle {
 
     AsyncJavaParser lib;
     EventBus bus;
+    View view;
 
     public Controller(AsyncJavaParser lib) {
         this.lib = lib;
+    }
+
+    public void setView(View view) {
+        this.view = view;
     }
 
     public void start(){
         bus = this.getVertx().eventBus();
         bus.consumer("updatesAnalysis", message -> {
             System.out.println(message.body());
+            view.notifyUpdates();
         });
     }
 

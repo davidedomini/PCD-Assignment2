@@ -9,6 +9,7 @@ public class TestClientB {
         Model model = new Model();
         Controller controller = new Controller(lib);
         v.deployVerticle(controller);
-        new View(controller, model);
+        View view = new View(controller, model);
+        controller.setView(view);
     }
 }

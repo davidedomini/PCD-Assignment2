@@ -10,6 +10,7 @@ public class View extends JFrame {
     JLabel labelDirectoryChoosed = new JLabel("No selected directory");
     Controller controller;
     Model model;
+    JTextArea textAreaReport = new JTextArea();;
 
     public View(Controller controller, Model model){
         this.controller = controller;
@@ -41,6 +42,7 @@ public class View extends JFrame {
 
         // VISUALIZING ANALYSIS OF PROJECT
         JPanel visualizingPanel = new JPanel();
+        visualizingPanel.add(textAreaReport);
         this.getContentPane().add(BorderLayout.CENTER, visualizingPanel);
 
         // CONTROL OF THE ANALYSIS
@@ -71,4 +73,19 @@ public class View extends JFrame {
 
         this.setVisible(true);
     }
+
+    public void notifyUpdates(){
+        String upd = model.toString();
+        display(upd);
+    }
+
+    private void display(String updates){
+        //update
+        try {
+            SwingUtilities.invokeAndWait(() -> {
+                textAreaReport.setText(updates);
+            });
+        } catch (Exception ex) {}
+    }
+
 }
