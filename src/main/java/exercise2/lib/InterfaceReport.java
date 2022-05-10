@@ -44,7 +44,7 @@ public class InterfaceReport {
         return "InterfaceReport{" +
                 "interfaceName='" + interfaceName + '\'' + "\n" +
                 ", interfacePackage='" + interfacePackage + '\'' + "\n" +
-                ", methods=" + methods + "\n" +
+                ", methods=" + methods + //"\n" +
                 '}' + "\n";
     }
 }

@@ -53,7 +53,7 @@ public class ClassReport {
                 "className='" + className + '\'' + "\n" +
                 ", classPackage='" + classPackage + '\'' + "\n" +
                 ", methods=" + methods + "\n" +
-                ", fields=" + fields + "\n" +
+                ", fields=" + fields + //"\n" +
                 '}' + "\n";
     }
 }

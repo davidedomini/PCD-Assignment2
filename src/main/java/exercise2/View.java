@@ -40,12 +40,10 @@ public class View extends JFrame {
 
         // VISUALIZING ANALYSIS OF PROJECT
         JPanel visualizingPanel = new JPanel();
-        //visualizingPanel.add(textAreaReport);
-
         JScrollPane scroll = new JScrollPane (textAreaReport);
+        textAreaReport.setEditable(false);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        //visualizingPanel.add(scroll);
 
         this.getContentPane().add(BorderLayout.CENTER, scroll);
 
@@ -86,7 +84,7 @@ public class View extends JFrame {
     private void display(String updates){
         try {
             SwingUtilities.invokeAndWait(() -> {
-                textAreaReport.append(updates);
+                textAreaReport.append(updates + "\n");
             });
         } catch (Exception ex) {}
     }

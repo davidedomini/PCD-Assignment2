@@ -57,13 +57,13 @@ public class AnalyzerProject extends AbstractVerticle {
                 if(lib.isInterface(file)){
                     lib.getInterfaceReport(file)
                             .onSuccess(r -> {
-                                if(printPackage) bus.publish(topic, "\nNew package founded:" + r.getInterfacePackage() + "\n");
+                                if(printPackage) bus.publish(topic, "\nNew package founded: " + r.getInterfacePackage() + "\n");
                                 bus.publish(topic, r.toString());
                             });
                 }else{
                     lib.getClassReport(file)
                             .onSuccess(r ->{
-                                if(printPackage) bus.publish(topic, "New package founded:" + r.getClassPackage());
+                                if(printPackage) bus.publish(topic, "\nNew package founded: " + r.getClassPackage());
                                 bus.publish(topic, r.toString());
                             });
                 }
