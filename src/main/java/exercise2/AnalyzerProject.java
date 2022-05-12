@@ -1,5 +1,6 @@
 package exercise2;
 
+import exercise2.lib.Flag;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.EventBus;
 
@@ -13,29 +14,33 @@ public class AnalyzerProject extends AbstractVerticle {
     private String srcDirectory;
     private String topic;
     private List<String> allDirectories;
-    private boolean stopFlag;
+    private Flag stopFlag;
     private EventBus bus;
+    private int anal = 0;
 
-    public AnalyzerProject(String srcDirectory, String topic, AsyncJavaParser lib) {
+    public AnalyzerProject(String srcDirectory, String topic, AsyncJavaParser lib, Flag stopFlag) {
         this.srcDirectory = srcDirectory;
         this.topic = topic;
         this.lib = lib;
-        this.stopFlag = false;
+        this.stopFlag = stopFlag;
     }
 
     public void start(){
         this.bus = this.getVertx().eventBus();
-        bus.consumer("stopMessage", message -> {
-            stopFlag = true;
-            System.out.println("AnalyzerProject: received stop");
-        });
         allDirectories = new ArrayList<>(lib.getAllDirectories(srcDirectory));
         analyzeDirectories(allDirectories);
 
+        System.out.println("Analyzed files: " + this.anal);
+        try {
+            System.out.println("Analisi finita stoppo il verticle");
+            super.stop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void analyzeDirectories(List<String> srcDirectories){
-        if(!stopFlag && !srcDirectories.isEmpty()){
+        if(!stopFlag.isSet() && !srcDirectories.isEmpty()){
             String pkg = srcDirectories.get(0);
             srcDirectories.remove(0);
             List<String> files = lib.listOfAllFiles(pkg);
@@ -43,10 +48,13 @@ public class AnalyzerProject extends AbstractVerticle {
             analyzeFiles(files, true);
             analyzeDirectories(srcDirectories);
         }
+
+
     }
 
     private void analyzeFiles(List<String> srcFiles, boolean printPackage){
-        if(!stopFlag && !srcFiles.isEmpty()){
+        if(!stopFlag.isSet() && !srcFiles.isEmpty()){
+            this.anal++;
             String file = srcFiles.get(0);
             System.out.println(file);
             srcFiles.remove(0);

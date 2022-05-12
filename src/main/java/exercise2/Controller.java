@@ -1,5 +1,6 @@
 package exercise2;
 
+import exercise2.lib.Flag;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.EventBus;
 
@@ -8,9 +9,11 @@ public class Controller extends AbstractVerticle {
     AsyncJavaParser lib;
     EventBus bus;
     View view;
+    Flag stopFlag;
 
     public Controller(AsyncJavaParser lib) {
         this.lib = lib;
+        this.stopFlag = new Flag();
     }
 
     public void setView(View view) {
@@ -23,11 +26,12 @@ public class Controller extends AbstractVerticle {
     }
 
     public void startAnalysis(String srcDirectory){
-        lib.analyzeProject(srcDirectory, "updatesAnalysis");
+        this.stopFlag.reset();
+        lib.analyzeProject(srcDirectory, "updatesAnalysis", stopFlag);
     }
 
     public void stopAnalysis(){
-        bus.publish("stopMessage", "Stop analysis");
+        stopFlag.stop();
     }
 
 }

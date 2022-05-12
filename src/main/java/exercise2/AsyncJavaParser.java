@@ -99,8 +99,8 @@ public class AsyncJavaParser {
         });
     }
 
-    public void analyzeProject(String srcProject, String topic){
-        vertx.deployVerticle(new AnalyzerProject(srcProject, topic, this));
+    public void analyzeProject(String srcProject, String topic, Flag stopFlag){
+        vertx.deployVerticle(new AnalyzerProject(srcProject, topic, this, stopFlag));
     }
 
     private String findMainClass(ProjectReport pr){
