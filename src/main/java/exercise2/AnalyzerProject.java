@@ -1,12 +1,8 @@
 package exercise2;
 
-import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.CompilationUnit;
-import exercise2.lib.PackageReport;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.EventBus;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +35,7 @@ public class AnalyzerProject extends AbstractVerticle {
     }
 
     private void analyzeDirectories(List<String> srcDirectories){
-        if(!stopFlag && !srcDirectories.isEmpty()){
+        if(!stopFlag&& !srcDirectories.isEmpty()){
             String pkg = srcDirectories.get(0);
             srcDirectories.remove(0);
             List<String> files = lib.listOfAllFiles(pkg);
