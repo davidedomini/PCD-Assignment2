@@ -11,6 +11,10 @@ public class TestClientA {
         lib
             .getClassReport("src/main/java/exercise2/examples/ClasseDiProva.java")
             .subscribe(System.out::println);
+
+        lib
+            .getPackageReport("src/main/java/exercise2/examples")
+            .subscribe(System.out::println);
     }
 
 }

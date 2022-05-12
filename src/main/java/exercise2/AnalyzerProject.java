@@ -39,6 +39,7 @@ public class AnalyzerProject extends AbstractVerticle {
             String pkg = srcDirectories.get(0);
             srcDirectories.remove(0);
             List<String> files = lib.listOfAllFiles(pkg);
+
             analyzeFiles(files, true);
             analyzeDirectories(srcDirectories);
         }
@@ -47,6 +48,7 @@ public class AnalyzerProject extends AbstractVerticle {
     private void analyzeFiles(List<String> srcFiles, boolean printPackage){
         if(!stopFlag && !srcFiles.isEmpty()){
             String file = srcFiles.get(0);
+            System.out.println(file);
             srcFiles.remove(0);
             //analyze
             try {
