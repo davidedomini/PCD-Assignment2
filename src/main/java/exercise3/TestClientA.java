@@ -15,6 +15,9 @@ public class TestClientA {
         lib
             .getPackageReport("src/main/java/exercise2/examples")
             .subscribe(System.out::println);
-    }
 
+        lib
+                .getProjectReport("src/main/java/exercise2/examples")
+                .subscribe(System.out::println);
+    }
 }
