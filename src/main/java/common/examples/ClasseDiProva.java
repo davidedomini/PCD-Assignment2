@@ -1,4 +1,4 @@
-package exercise2.examples;
+package common.examples;
 
 public class ClasseDiProva {
 

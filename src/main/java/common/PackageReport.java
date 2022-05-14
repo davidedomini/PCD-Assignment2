@@ -1,4 +1,4 @@
-package exercise2.lib;
+package common;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,4 @@
-package exercise2.lib;
-
-import exercise2.lib.Method;
+package common;
 
 import java.util.ArrayList;
 import java.util.List;

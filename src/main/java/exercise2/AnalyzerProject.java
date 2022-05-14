@@ -1,6 +1,7 @@
 package exercise2;
 
-import exercise2.lib.Flag;
+import common.Utility;
+import common.Flag;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.EventBus;
 
@@ -11,12 +12,13 @@ import java.util.List;
 public class AnalyzerProject extends AbstractVerticle {
 
     private AsyncJavaParser lib;
+    private Utility utilities = new Utility();
     private String srcDirectory;
     private String topic;
     private List<String> allDirectories;
     private Flag stopFlag;
     private EventBus bus;
-    private int anal = 0;
+    private int analyzedFiles = 0;
 
     public AnalyzerProject(String srcDirectory, String topic, AsyncJavaParser lib, Flag stopFlag) {
         this.srcDirectory = srcDirectory;
@@ -27,10 +29,10 @@ public class AnalyzerProject extends AbstractVerticle {
 
     public void start(){
         this.bus = this.getVertx().eventBus();
-        allDirectories = new ArrayList<>(lib.getAllDirectories(srcDirectory));
+        allDirectories = new ArrayList<>(utilities.getAllDirectories(srcDirectory));
         analyzeDirectories(allDirectories);
 
-        System.out.println("Analyzed files: " + this.anal);
+        System.out.println("Analyzed files: " + this.analyzedFiles);
         try {
             System.out.println("Analisi finita stoppo il verticle");
             super.stop();
@@ -43,7 +45,7 @@ public class AnalyzerProject extends AbstractVerticle {
         if(!stopFlag.isSet() && !srcDirectories.isEmpty()){
             String pkg = srcDirectories.get(0);
             srcDirectories.remove(0);
-            List<String> files = lib.listOfAllFiles(pkg);
+            List<String> files = utilities.listOfAllFiles(pkg);
 
             analyzeFiles(files, true);
             analyzeDirectories(srcDirectories);
@@ -54,13 +56,13 @@ public class AnalyzerProject extends AbstractVerticle {
 
     private void analyzeFiles(List<String> srcFiles, boolean printPackage){
         if(!stopFlag.isSet() && !srcFiles.isEmpty()){
-            this.anal++;
+            this.analyzedFiles++;
             String file = srcFiles.get(0);
             System.out.println(file);
             srcFiles.remove(0);
             //analyze
             try {
-                if(lib.isInterface(file)){
+                if(utilities.isInterface(file)){
                     lib.getInterfaceReport(file)
                             .onSuccess(r -> {
                                 if(printPackage) bus.publish(topic, "\nNew package founded: " + r.getInterfacePackage() + "\n");

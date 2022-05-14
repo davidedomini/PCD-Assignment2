@@ -1,4 +1,4 @@
-package exercise2.examples.sottopackage.sottosottopackage;
+package common.examples.sottopackage.sottosottopackage;
 
 public class Pair {
 

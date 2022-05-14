@@ -1,6 +1,6 @@
 package exercise2;
 
-import exercise2.lib.Flag;
+import common.Flag;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.EventBus;
 

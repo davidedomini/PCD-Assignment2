@@ -1,4 +1,4 @@
-package exercise2.lib;
+package common;
 
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.PackageDeclaration;

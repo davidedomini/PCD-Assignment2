@@ -1,4 +1,4 @@
-package exercise2.examples.sottopackage;
+package common.examples.sottopackage;
 
 public interface InterfacciaDiProva2 {
 }

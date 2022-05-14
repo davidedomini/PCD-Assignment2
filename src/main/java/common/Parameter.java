@@ -1,11 +1,10 @@
-package exercise2.lib;
+package common;
 
-public class Field {
+public class Parameter {
+    private final String name;
+    private final String type;
 
-    private String name;
-    private String type;
-
-    public Field(String name, String type) {
+    public Parameter(String name, String type){
         this.name = name;
         this.type = type;
     }
@@ -14,21 +13,13 @@ public class Field {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     @Override
     public String toString() {
-        return "Field{" +
+        return "Parameter{" +
                 "name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 '}';

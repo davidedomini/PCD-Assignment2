@@ -1,4 +1,4 @@
-package exercise2.lib;
+package common;
 
 public class Flag {
     private boolean flag;

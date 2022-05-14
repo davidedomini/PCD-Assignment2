@@ -5,19 +5,19 @@ public class TestClientA {
     public static void main(String[] args){
         ReactiveJavaParser lib = new ReactiveJavaParser();
         lib
-            .getInterfaceReport("src/main/java/exercise2/examples/InterfacciaDiProva.java")
+            .getInterfaceReport("src/main/java/common/examples/InterfacciaDiProva.java")
             .subscribe(System.out::println);
 
         lib
-            .getClassReport("src/main/java/exercise2/examples/ClasseDiProva.java")
+            .getClassReport("src/main/java/common/examples/ClasseDiProva.java")
             .subscribe(System.out::println);
 
         lib
-            .getPackageReport("src/main/java/exercise2/examples")
+            .getPackageReport("src/main/java/common/examples")
             .subscribe(System.out::println);
 
         lib
-                .getProjectReport("src/main/java/exercise2/examples")
+                .getProjectReport("src/main/java/common/examples")
                 .subscribe(System.out::println);
     }
 }
