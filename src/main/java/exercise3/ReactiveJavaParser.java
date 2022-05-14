@@ -14,6 +14,8 @@ import java.util.List;
 public class ReactiveJavaParser {
 
     private Utility utilities = new Utility();
+    private Flag stopFlag;
+    private int analyzedFiles;
 
     Flowable<InterfaceReport> getInterfaceReport(String path) {
         return Flowable.fromCallable(() -> analyzeInterface(path));
@@ -79,12 +81,51 @@ public class ReactiveJavaParser {
 
     void analyzeProject(String path, PublishSubject<String> streamReports, Flag stopFlag){
         List<String> packages = new ArrayList<>(utilities.getAllDirectories(path));
-        boolean printPackage;
+        this.stopFlag = stopFlag;
+        this.analyzedFiles = 0;
+        analyzeDirectories(packages, streamReports);
+        streamReports.onComplete();
+        System.out.println("Analyzed files: " + analyzedFiles);
+    }
 
+    private void analyzeDirectories(List<String> srcDirectories, PublishSubject<String> streamReports){
+        if(!stopFlag.isSet() && !srcDirectories.isEmpty()){
+            String pkg = srcDirectories.get(0);
+            srcDirectories.remove(0);
+            List<String> files = utilities.listOfAllFiles(pkg);
+
+            analyzeFiles(files, streamReports, true);
+            analyzeDirectories(srcDirectories, streamReports);
+        }
+    }
+
+    private void analyzeFiles(List<String> srcFiles, PublishSubject<String> streamReports,  boolean printPackage){
+        if(!stopFlag.isSet() && !srcFiles.isEmpty()) {
+            this.analyzedFiles++;
+            String file = srcFiles.get(0);
+            srcFiles.remove(0);
+            if(utilities.isInterface(file)){
+                InterfaceReport r = analyzeInterface(file);
+                if(printPackage)  streamReports.onNext("New package founded: " + r.getInterfacePackage());
+                streamReports.onNext(r.toString());
+            }else{
+                ClassReport r = analyzeClass(file);
+                if(printPackage)  streamReports.onNext("New package founded: " + r.getClassPackage());
+                streamReports.onNext(r.toString());
+            }
+            analyzeFiles(srcFiles, streamReports, false);
+        }
+    }
+
+    /*void analyzeProject(String path, PublishSubject<String> streamReports, Flag stopFlag){
+        List<String> packages = new ArrayList<>(utilities.getAllDirectories(path));
+        boolean printPackage;
+        int analyzedFiles = 0;
         for (String pkg : packages){
             printPackage = true;
             List<String> files = utilities.listOfAllFiles(pkg);
             for (String f : files){
+                analyzedFiles++;
                 if(!stopFlag.isSet()){
                     if(utilities.isInterface(f)){
                         InterfaceReport r = analyzeInterface(f);
@@ -106,7 +147,7 @@ public class ReactiveJavaParser {
         }
 
         streamReports.onComplete();
-
-    }
+        System.out.println("Analyzed files: " + analyzedFiles);
+    }*/
 
 }

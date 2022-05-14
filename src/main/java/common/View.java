@@ -25,18 +25,15 @@ public class View extends JFrame {
         selectionPanel.add(labelDirectoryChoosed);
         JButton chooserButton = new JButton("Select a Directory");
         selectionPanel.add(chooserButton);
-        chooserButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser chooser = new JFileChooser();
-                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                if(chooser.showOpenDialog(selectionPanel) == JFileChooser.APPROVE_OPTION){
-                    labelDirectoryChoosed.setText(chooser.getCurrentDirectory().toString());
-                    System.out.println(chooser.getCurrentDirectory());
-                } else {
-                    labelDirectoryChoosed.setText("No selected directory");
-                    System.out.println("No selected directory");
-                }
+        chooserButton.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            if(chooser.showOpenDialog(selectionPanel) == JFileChooser.APPROVE_OPTION){
+                labelDirectoryChoosed.setText(chooser.getCurrentDirectory().toString());
+                System.out.println(chooser.getCurrentDirectory());
+            } else {
+                labelDirectoryChoosed.setText("No selected directory");
+                System.out.println("No selected directory");
             }
         });
 
@@ -57,23 +54,17 @@ public class View extends JFrame {
         stopButton.setEnabled(false);
         controlPanel.add(startButton);
         controlPanel.add(stopButton);
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                startButton.setEnabled(false);
-                stopButton.setEnabled(true);
-                textAreaReport.setText("");
-                controller.startAnalysis(labelDirectoryChoosed.getText());
-            }
+        startButton.addActionListener(e -> {
+            startButton.setEnabled(false);
+            stopButton.setEnabled(true);
+            textAreaReport.setText("");
+            controller.startAnalysis(labelDirectoryChoosed.getText());
         });
-        stopButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                stopButton.setEnabled(false);
-                startButton.setEnabled(true);
-                labelDirectoryChoosed.setText("No selected directory");
-                controller.stopAnalysis();
-            }
+        stopButton.addActionListener(e -> {
+            stopButton.setEnabled(false);
+            startButton.setEnabled(true);
+            labelDirectoryChoosed.setText("No selected directory");
+            controller.stopAnalysis();
         });
 
         this.setVisible(true);

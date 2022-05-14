@@ -50,15 +50,12 @@ public class AnalyzerProject extends AbstractVerticle {
             analyzeFiles(files, true);
             analyzeDirectories(srcDirectories);
         }
-
-
     }
 
     private void analyzeFiles(List<String> srcFiles, boolean printPackage){
         if(!stopFlag.isSet() && !srcFiles.isEmpty()){
             this.analyzedFiles++;
             String file = srcFiles.get(0);
-            System.out.println(file);
             srcFiles.remove(0);
             //analyze
             try {
