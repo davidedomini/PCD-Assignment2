@@ -1,15 +1,14 @@
-package exercise2;
+package exercise3;
 
 import common.View;
-import io.vertx.core.Vertx;
 
 public class TestClientB {
+
     public static void main(String[] args){
-        Vertx v = Vertx.vertx();
-        AsyncJavaParser lib = new AsyncJavaParser(v);
+        ReactiveJavaParser lib = new ReactiveJavaParser();
         Controller controller = new Controller(lib);
-        v.deployVerticle(controller);
         View view = new View(controller);
         controller.setView(view);
     }
+
 }

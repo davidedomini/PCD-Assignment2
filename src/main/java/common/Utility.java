@@ -21,8 +21,13 @@ public class Utility {
                 .collect(Collectors.toList());
     }
 
-    public boolean isInterface(String srcFile) throws FileNotFoundException {
-        CompilationUnit cu = StaticJavaParser.parse(new File(srcFile));
+    public boolean isInterface(String srcFile){
+        CompilationUnit cu = null;
+        try {
+            cu = StaticJavaParser.parse(new File(srcFile));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         return cu.getType(0).asClassOrInterfaceDeclaration().isInterface();
     }
 

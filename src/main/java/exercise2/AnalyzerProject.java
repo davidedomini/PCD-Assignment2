@@ -75,7 +75,7 @@ public class AnalyzerProject extends AbstractVerticle {
                                 bus.publish(topic, r.toString());
                             });
                 }
-            } catch (FileNotFoundException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             analyzeFiles(srcFiles, false);

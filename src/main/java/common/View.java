@@ -1,4 +1,6 @@
-package exercise2;
+package common;
+
+import exercise2.Controller;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,10 +10,10 @@ import java.awt.event.ActionListener;
 public class View extends JFrame {
 
     JLabel labelDirectoryChoosed = new JLabel("No selected directory");
-    Controller controller;
+    ControllerInterface controller;
     JTextArea textAreaReport = new JTextArea();;
 
-    public View(Controller controller){
+    public View(ControllerInterface controller){
         this.controller = controller;
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800,800);

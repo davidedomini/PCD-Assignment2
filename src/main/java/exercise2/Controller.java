@@ -1,10 +1,12 @@
 package exercise2;
 
+import common.ControllerInterface;
 import common.Flag;
+import common.View;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.EventBus;
 
-public class Controller extends AbstractVerticle {
+public class Controller extends AbstractVerticle implements ControllerInterface {
 
     AsyncJavaParser lib;
     EventBus bus;
