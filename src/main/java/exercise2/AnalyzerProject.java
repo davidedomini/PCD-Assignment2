@@ -35,7 +35,7 @@ public class AnalyzerProject extends AbstractVerticle {
         System.out.println("Analyzed files: " + this.analyzedFiles);
         try {
             System.out.println("Analisi finita stoppo il verticle");
-            super.stop();
+            vertx.undeploy(this.deploymentID());
         } catch (Exception e) {
             e.printStackTrace();
         }
