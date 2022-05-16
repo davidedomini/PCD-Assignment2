@@ -11,10 +11,6 @@ public class TestClientB {
         Controller controller = new Controller(lib);
         View view = new View(controller);
         controller.setView(view);
-        /*SwingUtilities.invokeLater(()->{
-            View view = new View(controller);
-            controller.setView(view);
-        });*/
     }
 
 }

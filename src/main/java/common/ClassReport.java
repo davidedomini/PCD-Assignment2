@@ -49,11 +49,11 @@ public class ClassReport {
 
     @Override
     public String toString() {
-        return "ClassReport{" +
-                "className='" + className + '\'' + "\n" +
-                ", classPackage='" + classPackage + '\'' + "\n" +
-                ", methods=" + methods + "\n" +
-                ", fields=" + fields + //"\n" +
+        return "ClassReport{" + "\n" +
+                "\tclassName='" + className + '\'' + ",\n" +
+                "\tclassPackage='" + classPackage + '\'' + ",\n" +
+                "\tmethods = " + methods + ",\n" +
+                "\tfields = " + fields +
                 '}' + "\n";
     }
 }

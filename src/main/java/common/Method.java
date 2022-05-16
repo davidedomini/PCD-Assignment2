@@ -62,13 +62,13 @@ public class Method {
 
     @Override
     public String toString() {
-        return "Method{" +
-                "name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", beginLine:" + beginLine +
-                ", endLine:" + endLine +
-                ", modifiers=" + modifiers +
-                ", parameters=" + parameters +
-                '}' + "\n";
+        return "\n\t\tMethod{" +
+                "name = '" + name + '\'' +
+                ", type = '" + type + '\'' +
+                ", beginLine: " + beginLine +
+                ", endLine: " + endLine +
+                ", modifiers = " + modifiers +
+                ", parameters = " + parameters +
+                '}';
     }
 }

@@ -28,7 +28,7 @@ public class Field {
 
     @Override
     public String toString() {
-        return "Field{" +
+        return "\n\t\tField{" +
                 "name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 '}';

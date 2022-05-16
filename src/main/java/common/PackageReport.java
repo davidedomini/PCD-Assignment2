@@ -41,10 +41,10 @@ public class PackageReport {
 
     @Override
     public String toString() {
-        return "PackageReport{" +
-                "packageName='" + packageName + '\'' +
-                ", classReports=" + classReports +
+        return "PackageReport{" + "\n" +
+                "packageName='" + packageName + '\'' + "\n" +
+                ", classReports=" + classReports + "\n" +
                 ", interfaceReports=" + interfaceReports +
-                '}';
+                '}' + "\n";
     }
 }

@@ -30,9 +30,9 @@ public class ProjectReport {
 
     @Override
     public String toString() {
-        return "ProjectReport{" +
-                "MainClass='" + mainClass + '\'' +
+        return "ProjectReport{" + "\n" +
+                "MainClass='" + mainClass + '\'' + "\n" +
                 ", Reports=" + reports +
-                '}';
+                '}' + "\n";
     }
 }

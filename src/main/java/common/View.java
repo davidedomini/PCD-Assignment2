@@ -29,8 +29,8 @@ public class View extends JFrame {
             JFileChooser chooser = new JFileChooser();
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             if(chooser.showOpenDialog(selectionPanel) == JFileChooser.APPROVE_OPTION){
-                labelDirectoryChoosed.setText(chooser.getCurrentDirectory().toString());
-                System.out.println(chooser.getCurrentDirectory());
+                labelDirectoryChoosed.setText(chooser.getSelectedFile().toString());
+                System.out.println(chooser.getSelectedFile());
             } else {
                 labelDirectoryChoosed.setText("No selected directory");
                 System.out.println("No selected directory");

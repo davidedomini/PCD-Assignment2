@@ -90,14 +90,14 @@ public class ReactiveJavaParser {
                         InterfaceReport r = analyzeInterface(f);
                         if(printPackage){
                             printPackage = false;
-                            emitter.onNext("New package founded: " + r.getInterfacePackage());
+                            emitter.onNext("New package founded: " + r.getInterfacePackage() + "\n");
                         }
                         emitter.onNext(r.toString());
                     }else{
                         ClassReport r = analyzeClass(f);
                         if(printPackage){
                             printPackage = false;
-                            emitter.onNext("New package founded: " + r.getClassPackage());
+                            emitter.onNext("New package founded: " + r.getClassPackage() + "\n");
                         }
                         emitter.onNext(r.toString());
                     }

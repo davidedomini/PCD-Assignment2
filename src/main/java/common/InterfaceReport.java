@@ -39,10 +39,10 @@ public class InterfaceReport {
 
     @Override
     public String toString() {
-        return "InterfaceReport{" +
-                "interfaceName='" + interfaceName + '\'' + "\n" +
-                ", interfacePackage='" + interfacePackage + '\'' + "\n" +
-                ", methods=" + methods + //"\n" +
+        return "InterfaceReport{" + "\n" +
+                "\tinterfaceName = '" + interfaceName + '\'' + ",\n" +
+                "\tinterfacePackage = '" + interfacePackage + '\'' + ",\n" +
+                "\tmethods = " + methods +
                 '}' + "\n";
     }
 }
