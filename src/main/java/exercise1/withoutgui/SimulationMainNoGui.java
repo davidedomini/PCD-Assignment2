@@ -11,7 +11,7 @@ public class SimulationMainNoGui {
         int nBodies = 5000;
         SimulationModel simModel = new SimulationModel(nBodies, bounds, totalIter);
         int nWorkers = Runtime.getRuntime().availableProcessors() + 1;
-        nWorkers = 9;
+        nWorkers = 4;
         System.out.println("CPU: " + nWorkers);
         SimulationController simController = new SimulationController(simModel, nWorkers);
         System.out.println("Starting Simulation......");

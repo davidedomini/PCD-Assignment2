@@ -3,6 +3,7 @@ package exercise3;
 import common.ControllerInterface;
 import common.Flag;
 import common.View;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 
@@ -11,6 +12,7 @@ public class Controller implements ControllerInterface {
     private ReactiveJavaParser lib;
     private Flag stopFlag;
     private View view;
+    private Disposable d;
 
     public Controller(ReactiveJavaParser lib) {
         this.lib = lib;
@@ -26,7 +28,7 @@ public class Controller implements ControllerInterface {
         this.stopFlag.reset();
         System.out.println("Controller: start");
         PublishSubject<String> streamReports = PublishSubject.create();
-        streamReports
+        this.d = streamReports
                 .observeOn(Schedulers.computation())
                 .subscribe((v) -> {
                     view.notifyUpdates(v);
@@ -38,5 +40,6 @@ public class Controller implements ControllerInterface {
     public void stopAnalysis() {
         System.out.println("Controller: stop");
         this.stopFlag.stop();
+        this.d.dispose();
     }
 }

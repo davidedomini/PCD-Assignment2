@@ -85,7 +85,6 @@ public class ReactiveJavaParser {
         this.analyzedFiles = 0;
         analyzeDirectories(packages, streamReports);
         streamReports.onComplete();
-        System.out.println("Analyzed files: " + analyzedFiles);
     }
 
     private void analyzeDirectories(List<String> srcDirectories, PublishSubject<String> streamReports){
@@ -101,7 +100,6 @@ public class ReactiveJavaParser {
 
     private void analyzeFiles(List<String> srcFiles, PublishSubject<String> streamReports,  boolean printPackage){
         if(!stopFlag.isSet() && !srcFiles.isEmpty()) {
-            this.analyzedFiles++;
             String file = srcFiles.get(0);
             srcFiles.remove(0);
             if(utilities.isInterface(file)){
@@ -116,38 +114,5 @@ public class ReactiveJavaParser {
             analyzeFiles(srcFiles, streamReports, false);
         }
     }
-
-    /*void analyzeProject(String path, PublishSubject<String> streamReports, Flag stopFlag){
-        List<String> packages = new ArrayList<>(utilities.getAllDirectories(path));
-        boolean printPackage;
-        int analyzedFiles = 0;
-        for (String pkg : packages){
-            printPackage = true;
-            List<String> files = utilities.listOfAllFiles(pkg);
-            for (String f : files){
-                analyzedFiles++;
-                if(!stopFlag.isSet()){
-                    if(utilities.isInterface(f)){
-                        InterfaceReport r = analyzeInterface(f);
-                        if (printPackage){
-                            streamReports.onNext("New package founded: " + r.getInterfacePackage());
-                            printPackage = false;
-                        }
-                        streamReports.onNext(r.toString());
-                    }else{
-                        ClassReport r = analyzeClass(f);
-                        if (printPackage){
-                            streamReports.onNext("New package founded: " + r.getClassPackage());
-                            printPackage = false;
-                        }
-                        streamReports.onNext(r.toString());
-                    }
-                }
-            }
-        }
-
-        streamReports.onComplete();
-        System.out.println("Analyzed files: " + analyzedFiles);
-    }*/
 
 }
