@@ -79,6 +79,7 @@ public class ReactiveJavaParser {
         });
     }
 
+
     void analyzeProject(String path, PublishSubject<String> streamReports, Flag stopFlag){
         List<String> packages = new ArrayList<>(utilities.getAllDirectories(path));
         this.stopFlag = stopFlag;
